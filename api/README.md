@@ -1,7 +1,7 @@
 #Projeto OrigoEnergia
 
-## Framework usado:
-###Laravel
+## Framework usado no desenvolvimento da Api:
+### Laravel
 
 A aplicação deve ser instalada no servidor apache
 
