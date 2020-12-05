@@ -2,7 +2,7 @@
 
 ## Liguagem usada para desenvolvimento do fron-end: React
 
-#Instalação dos pacotes:
+# Instalação dos pacotes:
 
 #### $ npm install
 
