@@ -13,10 +13,10 @@ Criar banco de dados com o nome "origoenergia"
 ## php artisan migrate
 ## php artisan db:seed
 
-#Subindo o serviço
+# Subindo o serviço
 ## php artisan serve
 
-#OBS
+# OBS
 O serviço por padrão vai subir no seguindo caminho
 ## http://127.0.0.1:8000
 
