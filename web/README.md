@@ -1,7 +1,7 @@
 #Projeto OrigoEnergia
 
 ## Liguagem:
-### React
+### Web - React
 
 #Instalação dos pacotes
 ## $ npm install
