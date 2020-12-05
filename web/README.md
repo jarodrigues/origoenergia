@@ -3,10 +3,13 @@
 ## Liguagem:
 ### Web - React
 
-#Instalação dos pacotes
+#Instalação dos pacotes:
+
 #### $ npm install
 
 #Subindo a aplicação
 #### $ npm start
+####
+#### $ yarn start
 
 
