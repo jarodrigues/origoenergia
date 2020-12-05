@@ -8,6 +8,8 @@ A aplicação deve ser instalada no servidor apache
 Antes de executar o projeto:
 
 Criar banco de dados com o nome "origoenergia"
+usuario: root
+senha:
 
 #Executar as migrate
 ## php artisan migrate
