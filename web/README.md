@@ -7,6 +7,6 @@
 #### $ npm install
 
 #Subindo a aplicação
-## $ npm start
+#### $ npm start
 
 
