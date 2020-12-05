@@ -1,7 +1,6 @@
 #Projeto OrigoEnergia
 
-## Liguagem:
-### Web - React
+## Liguagem usada para desenvolvimento do fron-end: React
 
 #Instalação dos pacotes:
 
