@@ -1,12 +1,12 @@
 #Projeto OrigoEnergia
 
 ## Liguagem:
-###React
+### React
 
 #Instalação dos pacotes
-##$ npm install
+## $ npm install
 
 #Subindo a aplicação
-##$ npm start
+## $ npm start
 
 
