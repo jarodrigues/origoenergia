@@ -1,12 +1,14 @@
 #Projeto OrigoEnergia
 
-## Liguagem:
-###React
+## Liguagem usada para desenvolvimento do fron-end: React
 
-#Instalação dos pacotes
-##$ npm install
+# Instalação dos pacotes:
+
+#### $ npm install
 
 #Subindo a aplicação
-##$ npm start
+#### $ npm start
+####
+#### $ yarn start
 
 
