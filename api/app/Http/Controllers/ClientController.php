@@ -142,7 +142,7 @@ class ClientController extends Controller
             
             // varifica se o registro tem
             if($planexist && $data->state->abbr == 'SP')
-                return response()->json(['msg' => 'Cliente que possui o plano Free não pode ser excluido', 'code' => 403], 403);
+                return response()->json(['msg' => 'Cliente de SP com plano Free não pode ser excluido', 'code' => 403], 403);
                 // se existir deleta
             echo 'quis excluir';
             die;
