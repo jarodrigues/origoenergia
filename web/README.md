@@ -8,7 +8,7 @@
 
 #Subindo a aplicação
 #### $ npm start
-####
+#### ou
 #### $ yarn start
 
 
