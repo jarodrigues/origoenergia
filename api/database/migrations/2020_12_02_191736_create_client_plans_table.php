@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientePlanosTable extends Migration
+class CreateClientPlansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateClientePlanosTable extends Migration
      */
     public function up()
     {
-        Schema::create('cliente_planos', function (Blueprint $table) {
+        Schema::create('client_plans', function (Blueprint $table) {
             $table->increments('id');            
-            $table->integer('cliente_id')->unsigned();
-            $table->foreign('cliente_id')->references('id')->on('clientes');
-            $table->integer('plano_id')->unsigned();
-            $table->foreign('plano_id')->references('id')->on('planos');
+            $table->integer('client_id')->unsigned();
+            $table->foreign('client_id')->references('id')->on('clients');
+            $table->integer('plan_id')->unsigned();
+            $table->foreign('plan_id')->references('id')->on('plans');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateClientePlanosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cliente_planos');
+        Schema::dropIfExists('client_plans');
     }
 }

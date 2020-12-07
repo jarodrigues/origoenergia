@@ -1,36 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { FiTrash, FiEdit, FiPlus } from 'react-icons/fi';
 import { Link} from 'react-router-dom';
-import api from './../../Api';
+import api from '../../Api';
 
 import './style.css';
-const Clientes = () =>{
+const Clients = () =>{
 
-  const [clientes, setClientes] = useState([]);
-  const [delCliente, setDelCliente] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [delClient, setDelClient] = useState([]); 
+
   useEffect(() => {
-      api.get('clientes').then(response => {
-        setClientes(response.data);
+      api.get('clients').then(response => {
+        setClients(response.data);
         console.log(response.data);
       });
-  }, [delCliente]); 
-
-  function planoCliente(){
-    
-  }
+  }, [delClient]); 
 
   function responseServer(data){
     alert(data.data.msg);
   }
 
-async function deleteCliente(id){
+  function formatData(dt){
+    let data = new Date(dt);
+    let dataFormatada = ((data.getDate() + 1 )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear(); 
+    return dataFormatada;
+  }
+async function deleteClient(id){
     
-    const idcliente = id;
+    const idclient = id;
     if (window.confirm("Deseja excluir o registro")) {
-      await api.delete(`clientes/${idcliente}`).then(response => {
+      await api.delete(`clients/${idclient}`).then(response => {
         responseServer(response.data);
         
-        setDelCliente(idcliente);
+        setDelClient(idclient);
       });
     } else {
       return;
@@ -40,7 +42,7 @@ async function deleteCliente(id){
 
     return(
       <div className="tblist bd-example">
-          <Link to="/novocliente" className="btn btn-info">
+          <Link to="/newclient" className="btn btn-info">
               <span> <FiPlus /> </span>Novo registro
           </Link>
         <table className="table table-striped">
@@ -57,25 +59,25 @@ async function deleteCliente(id){
             </tr>
           </thead>
           <tbody>          
-            {clientes.map(cliente => (
-              <tr key={cliente.id}>
+            {clients.map(client => (
+              <tr key={client.id}>
                 <td>
-                  {cliente.nome}
+                  {client.name}
                 </td>
                 <td>
-                  {cliente.email}
+                  {client.email}
                 </td>
                 <td>
-                  {cliente.email}
+                  {client.email}
                 </td>
                 <td>
-                  {cliente.dt_nascimento}
+                  {client.dt_birth}
                 </td>
                 <td>
-                  {cliente.nestado}
+                  {client.state.name}
                 </td>
                 <td>
-                  {cliente.ncidade}
+                  {client.city.name}
                 </td>
                 <td>
                   
@@ -84,9 +86,11 @@ async function deleteCliente(id){
                         Planos
                       </button>
                       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      {cliente.plano.map(pl => (
+                      {client.plans.map(plan => (
                            
-                          <span className={typeof pl[0] === 'undefined'? 'd-none': "dropdown-item"}>{typeof pl[0] === 'undefined'? '': pl[0].nome}</span>
+                      <span className="dropdown-item">
+                        {plan.map ? 'Cliente sem plano': plan.name +' - '+ plan.monthlypayment}
+                      </span>
                           
                         ))}
                       </div>
@@ -94,8 +98,8 @@ async function deleteCliente(id){
                          
                 </td>
                 <td>
-                  <Link to={`/edit/${cliente.id}`} className= "badge badge-secondary hi" alt="Editar"><span> <FiEdit /> </span></Link>
-                  <button  onClick={() => deleteCliente(cliente.id)} className={cliente.uf == "SP"? "badge badge-danger d-none": "badge badge-danger"}  alt="Excluir"><span> <FiTrash /> </span> </button>
+                  <Link to={`/edit/${client.id}`} className= "badge badge-secondary hi" alt="Editar"><span> <FiEdit /> </span></Link>
+                  <button  onClick={() => deleteClient(client.id)} className={client.state.abbr == "SP" && client.free == 1? "badge badge-danger d-none": "badge badge-danger"}  alt="Excluir"><span> <FiTrash /> </span> </button>
                 </td>
               </tr>
             ))}
@@ -106,4 +110,4 @@ async function deleteCliente(id){
   
 }
 
-export default Clientes;
+export default Clients;

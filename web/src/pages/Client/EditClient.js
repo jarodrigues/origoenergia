@@ -4,42 +4,42 @@ import { FiArrowLeft } from 'react-icons/fi';
 import './style.css';
 import api from '../../Api';
  
-const EditaCliente = (props) => {
+const EditClient = (props) => {
     const idProps = props.match.params.id;
-
+    const [redirectTo, setRedirectTo] = useState(false);
     //const [values, setValues] = useState([]);
     // bucas o cliente e seta o estado uf e cidade
     useEffect(() => {
-        api.get(`clientes/${idProps}`).then(response => {
+        api.get(`clients/${idProps}`).then(response => {
             setFormDate(response.data.data);
-            setSelectedUf(response.data.data.estado);
-            setSelectedCity(response.data.data.cidade);
-            setCheckPlane(response.data.data.plano);
+            setSelectedState(response.data.data.state_id);
+            setSelectedCity(response.data.data.city_id);
+            setCheckPlan(response.data.data.plans);
             console.log(response.data);
         });
     }, [idProps]);
     // estado ufs
-    const [ufs, setUfs] = useState([]);
+    const [states, setUfs] = useState([]);
     const [cities, setCities] = useState([]);
-    const [planes, setPlanes] = useState([]);
+    const [plans, setPlans] = useState([]);
     
 
-    const [selectedUf, setSelectedUf] = useState('0');
+    const [selectedState, setSelectedState] = useState('0');
     const [selectedCity, setSelectedCity] = useState('0');
-    const [checkedPlane, setCheckPlane] = useState([]);
+    const [checkedPlan, setCheckPlan] = useState([]);
 
 
     const [formDate, setFormDate] = useState({
-        nome: '',
+        name: '',
         email: '',
-        telefone: '',
-        dt_nascimento: ''
+        phonenumber: '',
+        dt_birth: ''
     });
 
     // busca OS PLANOS
     useEffect(() => {
-        api.get('planos').then(response => {
-            setPlanes(response.data);
+        api.get('plans').then(response => {
+            setPlans(response.data);
         });
     }, []);
 
@@ -52,18 +52,18 @@ const EditaCliente = (props) => {
 
     // busca as cidades pelo estado selecionado
     useEffect(() => {
-        if(selectedUf === '0') {
+        if(selectedState === '0') {
             return;
         }
-        api.get(`cities/${selectedUf}`).then(response => {
+        api.get(`cities/${selectedState}`).then(response => {
             setCities(response.data);
         }); 
-    }, [selectedUf]);
+    }, [selectedState]);
 
-    function handleSelectUf(e){
+    function handleSelectState(e){
         //console.log(e.target.value);
         const uf = e.target.value;
-        setSelectedUf(uf);
+        setSelectedState(uf);
     }
 
     function handleSelectCity(e){
@@ -79,7 +79,7 @@ const EditaCliente = (props) => {
     }
 
     function handCheckPlane(){
-        var aChk = document.getElementsByName('planos');
+        var aChk = document.getElementsByName('plans');
         const d = aChk.length;
  
         const checados = [];
@@ -90,63 +90,57 @@ const EditaCliente = (props) => {
                 // para pegar o valor é aChk[i].value
             }
         } 
-        setCheckPlane(checados);
+        setCheckPlan(checados);
     }
 
 
     function validaCheck(param){
         
-        var aChk = document.getElementsByName('planos');
+        var aChk = document.getElementsByName('plans');
         const d = aChk.length;
-        const p = param.length;
-        //console.log(param);
-        const checados = [];
+        const p = param.length; 
         for (var i=0; i < d; i++){
 
             for (var j=0; j < p; j++){
-
-                if (aChk[i].value == param[j]){
-                    aChk[i].checked = true;
-                    //checados.push(aChk[i].value);
+                if (aChk[i].value == param[j].id){
+                    aChk[i].checked = true; 
                 }
-
             }
         } 
-        
     }
     // checa os planos que o cliente ja possui
-    validaCheck(checkedPlane);
+    validaCheck(checkedPlan);
 
     function responseData(params){
         alert(params.msg);
-        <Redirect to="/somewhere/else" />
+        setRedirectTo(true);
     }
 
     async function handleSubimit(e){
         e.preventDefault();
         
-        const { nome, email, telefone, dt_nascimento } = formDate;
-        const estado = selectedUf;
-        const cidade = selectedCity;
-        const plano = checkedPlane;
+        const { name, email, phonenumber, dt_birth } = formDate;
+        const state_id = selectedState;
+        const city_id = selectedCity;
+        const plan = checkedPlan;
         
         
         const data = {
-            nome,
+            name,
             email,
-            telefone,
-            estado,
-            cidade,
-            dt_nascimento,
-            plano
+            phonenumber,
+            state_id,
+            city_id,
+            dt_birth,
+            plan
         };
 
         if(idProps){
-            await api.put(`clientes/${idProps}`, data).then(response => {
+            await api.put(`clients/${idProps}`, data).then(response => {
                 responseData(response.data);
             });
         } else {
-            await api.post('clientes', data).then(response => {
+            await api.post('clients', data).then(response => {
                 responseData(response.data);
             });
         }
@@ -156,10 +150,11 @@ const EditaCliente = (props) => {
         <div id="page-create-point">
             <header>
                 {/*<img src={logo} alt="Ecoleta"/> */}
-                <Link to="/clientes">
+                <Link to="/clients">
                     <FiArrowLeft />
                     Voltar para Lista de Clientes
                 </Link>
+                { redirectTo && <Redirect to='/clients' />}
             </header>
 
             <form onSubmit={handleSubimit}>
@@ -168,12 +163,12 @@ const EditaCliente = (props) => {
                 <fieldset>
                     <div className="field-group">
                         <div className="field">
-                            <label htmlFor="nome">Nome da entidade</label>
-                            <input type="text" name="nome" id="nome"  onChange={handleInputChange} value={formDate.nome}/>
+                            <label htmlFor="name">Nome da entidade</label>
+                            <input type="text" name="name" id="name"  onChange={handleInputChange} value={formDate.name}/>
                         </div>
                         <div className="field">
-                            <label htmlFor="dt_nascimento">Nome da entidade</label>
-                            <input type="text" name="dt_nascimento" id="dt_nascimento" onChange={handleInputChange}  value={formDate.dt_nascimento}/>
+                            <label htmlFor="dt_birth">Nome da entidade</label>
+                            <input type="date" name="dt_birth"  id="dt_birth" onChange={handleInputChange}  value={formDate.dt_birth}/>
                         </div>
                     </div>
                     <div className="field-group">
@@ -182,17 +177,17 @@ const EditaCliente = (props) => {
                             <input type="email" name="email" id="email"  onChange={handleInputChange}  value={formDate.email} />
                         </div>
                         <div className="field">
-                            <label htmlFor="telefone">Telefone</label>
-                            <input type="text" name="telefone" id="telefone"  onChange={handleInputChange}  value={formDate.telefone} />
+                            <label htmlFor="phonenumber">phonenumber</label>
+                            <input type="text" name="phonenumber" id="phonenumber"  onChange={handleInputChange}  value={formDate.phonenumber} />
                         </div>
                     </div>
                     <div className="field-group">
                         <div className="field">
                             <label htmlFor="uf">Estado (UF)</label>
-                            <select name="uf" id="uf" value={selectedUf} onChange={handleSelectUf}>
+                            <select name="uf" id="uf" value={selectedState} onChange={handleSelectState}>
                                 <option value="0">Selecione uma UF</option>
-                                {ufs.map(uf => (
-                                    <option key={uf.id} value={uf.id}>{uf.name}</option>
+                                {states.map(state => (
+                                    <option key={state.id} value={state.id}>{state.name}</option>
                                 ))};
                             </select>
                         </div>
@@ -209,21 +204,36 @@ const EditaCliente = (props) => {
                         
                     </div>
                 </fieldset>
-
+                
                 <fieldset>
-                    <legend>O plano é opicional</legend>
-                    {planes.map(plane => (
-                        <div key={plane.id} className="form-check form-check-inline">
-                            <input className="form-check-input" type="checkbox" id="planos" name="planos" value={plane.id} 
-                            onClick={handCheckPlane} 
-                            />
-                            <label className="form-check-label" htmlFor="planos">{plane.nome}</label>
-                        </div>
-                    ))}
+                    <h4>Planos </h4>
+                    <table className="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Mensalidade</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {plans.map(plan => (
+                            <tr key={plan.id}>
+                                <td>
+                                <input className="form-check-input" type="checkbox" id="plans" name="plans" 
+                                value={plan.id} 
+                                onClick={handCheckPlane} />
+                                </td>
+                                <td>{plan.name}</td>
+                                <td>{plan.monthlypayment}</td>
+                            </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    
                 </fieldset>
 
                <button type="submit">
-                   Cadastrar ponto de coleta
+                   Cadastrar
                </button>
             </form>
 
@@ -232,4 +242,4 @@ const EditaCliente = (props) => {
 }
 
 
-export default EditaCliente;
+export default EditClient;

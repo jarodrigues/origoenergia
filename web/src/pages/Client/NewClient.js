@@ -4,54 +4,54 @@ import { FiArrowLeft } from 'react-icons/fi';
 import './style.css';
 import api from '../../Api';
  
-const Form = () => {
+const NewClient = () => {
     // estado ufs
     const [redirectTo, setRedirectTo] = useState(false);
-    const [ufs, setUfs] = useState([]);
+    const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
-    const [planes, setPlanes] = useState([]);
+    const [plans, setPlans] = useState([]);
     
 
-    const [selectedUf, setSelectedUf] = useState('0');
+    const [selectedState, setSelectedState] = useState('0');
     const [selectedCity, setSelectedCity] = useState('0');
-    const [checkedPlane, setCheckPlane] = useState([]);
+    const [checkedPlan, setCheckPlan] = useState([]);
 
 
     const [formDate, setFormDate] = useState({
-        nome: '',
+        name: '',
         email: '',
-        telefone: '',
-        dt_nascimento: ''
+        phonenumber: '',
+        dt_birth: ''
     });
 
     // busca OS PLANOS
     useEffect(() => {
-        api.get('planos').then(response => {
-            setPlanes(response.data);
+        api.get('plans').then(response => {
+            setPlans(response.data);
         });
     }, []);
 
     // busca todos os estados
     useEffect(() => {
         api.get('states').then(response => {
-            setUfs(response.data);
+            setStates(response.data);
         });
     }, []);
 
     // busca as cidades pelo estado selecionado
     useEffect(() => {
-        if(selectedUf === 0) {
+        if(selectedState === 0) {
             return;
         }
-        api.get(`cities/${selectedUf}`).then(response => {
+        api.get(`cities/${selectedState}`).then(response => {
             setCities(response.data);
         }); 
-    }, [selectedUf]);
+    }, [selectedState]);
 
-    function handleSelectUf(e){
+    function handleSelectState(e){
         //console.log(e.target.value);
-        const uf = e.target.value;
-        setSelectedUf(uf);
+        const state = e.target.value;
+        setSelectedState(state);
     }
 
     function handleSelectCity(e){
@@ -61,13 +61,12 @@ const Form = () => {
     }
 
     function handleInputChange(e){
-        console.log(e.target.name, e.target.value);
         const { name, value } = e.target;
         setFormDate({ ...formDate, [name]: value });
     }
 
-    function handCheckPlane(){
-        var aChk = document.getElementsByName('planos');
+    function handCheckPlan(){
+        var aChk = document.getElementsByName('plans');
         const d = aChk.length;
  
         const checados = [];
@@ -78,34 +77,38 @@ const Form = () => {
                 // para pegar o valor é aChk[i].value
             }
         } 
-        setCheckPlane(checados);
+        setCheckPlan(checados);
     }
 
     function responseData(params){
+        let bol = true;
+        if(params.code == 201){
+            bol = false;
+        }
         alert(params.msg);
-        setRedirectTo(true);
+        setRedirectTo(bol);
     }
 
     async function handleSubimit(e){
         e.preventDefault();
         
-        const { nome, email, telefone, dt_nascimento } = formDate;
-        const estado = selectedUf;
-        const cidade = selectedCity;
-        const plano = checkedPlane;
+        const { name, email, phonenumber, dt_birth } = formDate;
+        const state_id = selectedState;
+        const city_id = selectedCity;
+        const plan = checkedPlan;
         
         
         const data = {
-            nome,
+            name,
             email,
-            telefone,
-            estado,
-            cidade,
-            dt_nascimento,
-            plano
+            phonenumber,
+            state_id,
+            city_id,
+            dt_birth,
+            plan
         };
 
-        await api.post('clientes', data).then(response => {
+        await api.post('clients', data).then(response => {
             responseData(response.data);
         });
     }
@@ -118,7 +121,7 @@ const Form = () => {
                     <FiArrowLeft />
                     Voltar para Lista de Clientes
                 </Link>
-                { redirectTo && <Redirect to='/clientes' />}
+                { redirectTo && <Redirect to='/clients' />}
             </header>
 
             <form onSubmit={handleSubimit}>
@@ -127,12 +130,12 @@ const Form = () => {
                 <fieldset>
                     <div className="field-group">
                         <div className="field">
-                            <label htmlFor="nome">Nome da entidade</label>
-                            <input type="text" name="nome" id="nome" onChange={handleInputChange}/>
+                            <label htmlFor="name">Nome da entidade</label>
+                            <input type="text" name="name" id="name" onChange={handleInputChange}/>
                         </div>
                         <div className="field">
-                            <label htmlFor="dt_nascimento">Data de nascimento</label>
-                            <input type="text" name="dt_nascimento" id="dt_nascimento" onChange={handleInputChange}/>
+                            <label htmlFor="dt_birth">Data de nascimento</label>
+                            <input type="date" name="dt_birth" id="dt_birth" onChange={handleInputChange}/>
                         </div>
                     </div>
 
@@ -142,17 +145,17 @@ const Form = () => {
                             <input type="email" name="email" id="email"  onChange={handleInputChange} />
                         </div>
                         <div className="field">
-                            <label htmlFor="telefone">Telefone</label>
-                            <input type="text" name="telefone" id="telefone"  onChange={handleInputChange} />
+                            <label htmlFor="phonenumber">Telefone</label>
+                            <input type="text" name="phonenumber" id="phonenumber"  onChange={handleInputChange} />
                         </div>
                     </div>
                     <div className="field-group">
                         <div className="field">
-                            <label htmlFor="uf">Estado (UF)</label>
-                            <select name="uf" id="uf" value={selectedUf} onChange={handleSelectUf}>
+                            <label htmlFor="state">Estado (UF)</label>
+                            <select name="state" id="state" value={selectedState} onChange={handleSelectState}>
                                 <option value="0">Selecione uma UF</option>
-                                {ufs.map(uf => (
-                                    <option key={uf.id} value={uf.id}>{uf.name}</option>
+                                {states.map(state => (
+                                    <option key={state.id} value={state.id}>{state.name}</option>
                                 ))};
                             </select>
                         </div>
@@ -172,20 +175,34 @@ const Form = () => {
                 </fieldset>
 
                 <fieldset>
-                    <legend>O plano é opicional</legend>
-                    {planes.map(plane => (
-                        <div key={plane.id} className="form-check form-check-inline">
-                            <input className="form-check-input" type="checkbox" id="planos" name="planos" value={plane.id} 
-                            
-                            onClick={handCheckPlane}
-                            />
-                            <label className="form-check-label" htmlFor="planos">{plane.nome}</label>
-                        </div>
-                    ))}
+                    <h4>Planos </h4>
+                    <table className="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Mensalidade</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {plans.map(plan => (
+                            <tr key={plan.id}>
+                                <td>
+                                    <input className="form-check-input" type="checkbox" id="plans" name="plans" 
+                                    value={plan.id} 
+                                    onClick={handCheckPlan} />
+                                </td>
+                                <td>{plan.name}</td>
+                                <td>{plan.monthlypayment}</td>
+                            </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    
                 </fieldset>
 
                <button type="submit">
-                   Cadastrar ponto de coleta
+                   Cadastrar
                </button>
             </form>
 
@@ -194,4 +211,4 @@ const Form = () => {
 }
 
 
-export default Form;
+export default NewClient;

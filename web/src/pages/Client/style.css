@@ -83,6 +83,7 @@
   
   #page-create-point form .field input[type=text],
   #page-create-point form .field input[type=email],
+  #page-create-point form .field input[type=date],
   #page-create-point form .field input[type=number] {
     flex: 1;
     background: #ffffff;
@@ -215,4 +216,10 @@
 .tblist{
   margin-top: 20px;
   padding: 1.5rem;
+}
+
+.form-check-input {
+  position: absolute;
+  margin-top: .3rem;
+  margin-left: 1rem;
 }

@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(StatesTableSeeder::class);
         $this->call(CitiesTableSeeder::class);
-        $this->call(ClienteSeeder::class);
-        $this->call(PlanoSeed::class);
+        $this->call(ClientsSeeder::class);
+        $this->call(PlansSeed::class);
     }
 }

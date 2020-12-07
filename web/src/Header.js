@@ -32,7 +32,7 @@ import logo from './assets/img/logo-origo.svg';
                     </Link>
                     <nav className="my-2 my-md-0 mr-md-3">
                         <Link className="btn py-2 d-none d-md-inline-block" style={stLink} to="/">Dashboard</Link>
-                        <Link className="btn py-2 d-none d-md-inline-block" style={stLink} to="/clientes">Clientes</Link>
+                        <Link className="btn py-2 d-none d-md-inline-block" style={stLink} to="/clients">Clientes</Link>
                     </nav>
                 </div>
             </header>

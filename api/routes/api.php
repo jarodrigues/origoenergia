@@ -18,14 +18,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('clientes')->group(function(){
-    Route::get('/', 'ClienteController@index');
-    Route::get('/{id}', 'ClienteController@show');
-    Route::post('/', 'ClienteController@store');
-    Route::put('/{id}', 'ClienteController@update');
-    Route::delete('/{id}', 'ClienteController@delete');
+Route::prefix('clients')->group(function(){
+    Route::get('/', 'ClientController@index');
+    Route::get('/{id}', 'ClientController@show');
+    Route::post('/', 'ClientController@store');
+    Route::put('/{id}', 'ClientController@update');
+    Route::delete('/{id}', 'ClientController@delete');
 });
 
-Route::get('/states', 'ClienteController@states');
-Route::get('/cities/{id}', 'ClienteController@cities');
-Route::get('planos', 'PlanoController@index');
+Route::get('/states', 'ClientController@states');
+Route::get('/cities/{id}', 'ClientController@cities');
+Route::get('plans', 'PlanController@index');
